@@ -64,7 +64,6 @@ VALUES
     (2, 'p2', 870),
     (3, 'p3', 330);
 
-    
 UPDATE product
 SET price = 900
 WHERE product_id = 2;
