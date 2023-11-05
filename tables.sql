@@ -34,22 +34,22 @@ CREATE TABLE sales (
 
 INSERT INTO sales(sale_id, userid, created_date, product_id)
 VALUES 
-    (1a, 1, '2017-04-19', 2),
-    (2a, 3, '2019-12-18', 1),
-    (3a, 2, '2020-07-20', 3),
-    (4a, 1, '2019-10-23', 2),
-    (5a, 1, '2018-03-19', 3),
-    (6a, 3, '2016-12-20', 2),
-    (7a, 1, '2016-11-09', 1),
-    (8a, 1, '2016-05-20', 3),
-    (9a, 2, '2017-09-24', 1),
-    (10a, 1, '2017-03-11', 2),
-    (1b, 1, '2016-03-11', 1),
-    (2b, 3, '2016-11-10', 1),
-    (3b, 3, '2017-12-07', 2),
-    (4b, 3, '2016-12-15', 2),
-    (5b, 2, '2017-11-08', 2),
-    (6b, 2, '2018-09-10', 3);
+    ('1a', 1, '2017-04-19', 2),
+    ('2a', 3, '2019-12-18', 1),
+    ('3a', 2, '2020-07-20', 3),
+    ('4a', 1, '2019-10-23', 2),
+    ('5a', 1, '2018-03-19', 3),
+    ('6a', 3, '2016-12-20', 2),
+    ('7a', 1, '2016-11-09', 1),
+    ('8a', 1, '2016-05-20', 3),
+    ('9a', 2, '2017-09-24', 1),
+    ('10a', 1, '2017-03-11', 2),
+    ('1b', 1, '2016-03-11', 1),
+    ('2b', 3, '2016-11-10', 1),
+    ('3b', 3, '2017-12-07', 2),
+    ('4b', 3, '2016-12-15', 2),
+    ('5b', 2, '2017-11-08', 2),
+    ('6b', 2, '2018-09-10', 3);
 
 DROP TABLE IF EXISTS product;
 CREATE TABLE product (
@@ -67,3 +67,40 @@ VALUES
 UPDATE product
 SET price = 900
 WHERE product_id = 2;
+
+DROP TABLE IF EXISTS roles;
+CREATE TABLE roles (
+    role_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    role_name VARCHAR(255)
+);
+
+INSERT INTO roles (role_name)
+VALUES 
+    ('user'),
+    ('gold_user');
+
+DROP TABLE IF EXISTS role_assignments;
+CREATE TABLE role_assignments (
+    assignment_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    userid INTEGER,
+    role_id INTEGER,
+    FOREIGN KEY (userid) REFERENCES users(userid),
+    FOREIGN KEY (role_id) REFERENCES roles(role_id)
+);
+
+INSERT INTO role_assignments (userid, role_id)
+VALUES 
+    (1, 1), 
+    (2, 1), 
+    (3, 1); 
+
+INSERT INTO role_assignments (userid, role_id)
+VALUES 
+    (1, 2), 
+    (2, 2); 
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON sales TO user;
+GRANT SELECT ON product TO user;
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON sales TO gold_user;
+GRANT SELECT, INSERT, UPDATE ON product TO gold_user;
