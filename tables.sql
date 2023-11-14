@@ -17,6 +17,7 @@ CREATE TABLE users (
     userid INTEGER PRIMARY KEY AUTO_INCREMENT,
     signup_date DATE
 );
+CREATE INDEX idx_userid ON users(userid);
 
 INSERT INTO users(signup_date) 
 VALUES 
@@ -104,3 +105,13 @@ GRANT SELECT ON product TO user;
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON sales TO gold_user;
 GRANT SELECT, INSERT, UPDATE ON product TO gold_user;
+
+
+
+SELECT AVG(price) AS average_price
+FROM product;
+
+SELECT s.sale_id, s.created_date, p.product_name, p.price
+FROM sales s
+JOIN product p ON s.product_id = p.product_id
+WHERE s.userid = 1;
