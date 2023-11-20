@@ -115,3 +115,45 @@ SELECT s.sale_id, s.created_date, p.product_name, p.price
 FROM sales s
 JOIN product p ON s.product_id = p.product_id
 WHERE s.userid = 1;
+
+
+SELECT
+    p.product_id,
+    p.product_name,
+    SUM(p.price * COUNT(s.sale_id)) AS total_revenue
+FROM
+    product p
+JOIN
+    sales s ON p.product_id = s.product_id
+GROUP BY
+    p.product_id, p.product_name;
+
+
+SELECT
+    u.userid,
+    COUNT(DISTINCT s.sale_id) / COUNT(DISTINCT p.product_id) AS avg_products_sold_per_user
+FROM
+    users u
+JOIN
+    sales s ON u.userid = s.userid
+JOIN
+    product p ON s.product_id = p.product_id
+GROUP BY
+    u.userid;
+
+-- Transaction example
+
+START TRANSACTION;
+
+
+UPDATE product
+SET price = 950
+WHERE product_id = 2;
+
+-- Simulate an error (e.g., constraint violation)
+INSERT INTO sales (sale_id, userid, created_date, product_id)
+VALUES ('11a', 2, '2022-01-01', 2);
+
+
+ROLLBACK;
+
